@@ -27,6 +27,7 @@ business_service = BusinessService(data_access=data_access)
 @router.post("/generate-topic")
 async def generate_topic(request: TopicRequest):
     try:
+        print("Aqui entro al enrutador")
         response = business_service.generate_business_response(request.topic, request.lang)
         return {"response": response}
     except Exception as e:
