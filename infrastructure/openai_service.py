@@ -10,6 +10,7 @@ class OpenAIService:
         self.client = OpenAI(api_key=api_key)
 
     def get_response(self, topic: str, lang: str) -> str:
+        print("nos hablo data access y nos solicito informacion con el lenguaje: " + lang)
         if lang == "en":
             return str(TEXT_EN)
         if lang == "es":
