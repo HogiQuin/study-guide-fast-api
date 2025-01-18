@@ -1,7 +1,14 @@
+from data_access.greeting_data_access import GreetingDataAccess
 from fastapi import APIRouter, HTTPException
+from infrastructure.greetings_service import GreetingService
 from resources.greetings import GREETINGS
+from services.greeting_bll import GreetingBLL
 
 hello_router = APIRouter()
+
+greeting_service = GreetingService()
+greeting_data_access = GreetingDataAccess(greeting_service=greeting_service)
+greeting_bll = GreetingBLL(greeting_data_access=greeting_data_access)
 
 @hello_router.get("/world")
 async def hello_world():
@@ -17,28 +24,7 @@ async def hello_mady(name: str, lang: str):
     try:
         print("aqui entro al enrutador de heelo_world")
         print("ruta: /" + name)
-        count_name = len(name)
-        if lang == "en":
-            if count_name <= 5: 
-                return str(name + ", " + GREETINGS["english"])
-            else: 
-                return str(GREETINGS["english"] + ", " + name)
-        if lang == "jp":
-            if count_name <= 5: 
-                return str(name + ", " + GREETINGS["japanese"])
-            else: 
-                return str(GREETINGS["japanese"] + ", " + name)
-        if lang == "de":
-            if count_name <= 5: 
-                return str(name + ", " + GREETINGS["german"])
-            else: 
-                return str(GREETINGS["german"] + ", " + name)
-        if lang == "it":
-            if count_name <= 5: 
-                return str(name + ", " + GREETINGS["italian"])
-            else: 
-                return str(GREETINGS["italian"] + ", " + name)
-    
-        return {"hello": name}
+
+        return greeting_bll.generate_greeting_response(name, lang)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
