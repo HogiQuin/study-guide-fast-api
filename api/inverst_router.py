@@ -1,26 +1,21 @@
-from data_access.inverst_data_access import InvertsDataAccess
+from data_access.open_inverst_data_access import OpenInverstDataAccess
 from fastapi import APIRouter, HTTPException
-from infrastructure.inverst_info_service import AlphaVantageClient
-from services.inverst_bll import InverstBLL
-
+from infrastructure.open_inverst_service import AlphaVantageClient
+from services.open_inverst_bll import OpenInverstBLL
 
 inverst_router = APIRouter()
 
-
-inverst_info_service = AlphaVantageClient()
-inverst_data_access = InvertsDataAccess(inverst_info_service=inverst_info_service)
-inverst_bll = InverstBLL(inverst_data_access=inverst_data_access)
+open_inverst_service = AlphaVantageClient()
+open_inverst_data_access = OpenInverstDataAccess(open_inverst_service=open_inverst_service)
+open_inverst_bll = OpenInverstBLL(open_inverst_data_access=open_inverst_data_access)
   
-
-#normalmente aqui todo es mas sencuillo, pero como se esta haciendo una inyeccion de dependencias, se tiene que hacer de esta manera
-#me gusta por que inicio comentando algo y copilot anda al tiro con el codigo, completa mis comentarios, pero me gusta
-
-
-async def inverst(inverst_id: str):
+@inverst_router.get("/{symbol}")
+async def open_inverst(symbol: str):
     try:
-        print("aqui entro al enrutador de inverst")
-        return inverst_bll.get_inverst_info(inverst_id)
+        print("aqui entro al enrutador de open_inverst")
+        print("ruta: /" + symbol)
+
+        return open_inverst_bll.get_symbol_inverst(symbol)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-#son las 4 de la mañana y no se me ocurre que mas poner, pero aqui ando todavia
