@@ -18,3 +18,4 @@ async def open_inverst(symbol: str):
         return open_inverst_bll.get_symbol_inverst(symbol)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
