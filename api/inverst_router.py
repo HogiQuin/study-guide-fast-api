@@ -15,7 +15,7 @@ inverst_bll = InverstBLL(inverst_data_access=inverst_data_access)
 #normalmente aqui todo es mas sencuillo, pero como se esta haciendo una inyeccion de dependencias, se tiene que hacer de esta manera
 #me gusta por que inicio comentando algo y copilot anda al tiro con el codigo, completa mis comentarios, pero me gusta
 
-
+@inverst_router.get("/{inverst_id}")
 async def inverst(inverst_id: str):
     try:
         print("aqui entro al enrutador de inverst")
